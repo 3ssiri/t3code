@@ -2,8 +2,12 @@ import { assert, it } from "@effect/vitest";
 import { ProviderInstanceId } from "@t3tools/contracts";
 import * as Effect from "effect/Effect";
 import * as Exit from "effect/Exit";
+import * as NodeHttp from "node:http";
 
-import { validateAntigravityCallbackUrl } from "./antigravityCallback.ts";
+import {
+  forwardAntigravityCallback,
+  validateAntigravityCallbackUrl,
+} from "./antigravityCallback.ts";
 
 const instanceId = ProviderInstanceId.make("antigravity-callback-test");
 const pending = { redirectUri: "http://127.0.0.1:51234/", state: "owned-state" };
@@ -45,4 +49,24 @@ it.effect("rejects different targets, credentials, fragments, and duplicate OAut
       assert.isTrue(Exit.isFailure(result), callback);
     }
   }),
+);
+
+it.live("delivers a callback the runtime answers with a redirect to its license picker", () =>
+  Effect.gen(function* () {
+    const server = yield* Effect.acquireRelease(
+      Effect.callback<NodeHttp.Server>((resume) => {
+        const server = NodeHttp.createServer((_request, response) => {
+          response.writeHead(302, { Location: "/license" }).end();
+        });
+        server.listen(0, "127.0.0.1", () => resume(Effect.succeed(server)));
+      }),
+      (server) => Effect.callback<void>((resume) => void server.close(() => resume(Effect.void))),
+    );
+    const address = server.address();
+    assert.isTrue(typeof address === "object" && address !== null);
+    if (typeof address !== "object" || address === null) return;
+    const callback = new URL(`http://127.0.0.1:${address.port}/?state=owned-state&code=x`);
+    const result = yield* forwardAntigravityCallback(instanceId, callback).pipe(Effect.exit);
+    assert.isTrue(Exit.isSuccess(result));
+  }).pipe(Effect.scoped),
 );

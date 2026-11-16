@@ -10,6 +10,8 @@ import { ProviderInstanceId } from "@t3tools/contracts";
 import * as HostProcess from "@t3tools/shared/HostProcess";
 import { describe, expect, it } from "@effect/vitest";
 import * as Effect from "effect/Effect";
+import * as Cause from "effect/Cause";
+import * as Exit from "effect/Exit";
 import * as FileSystem from "effect/FileSystem";
 import * as Layer from "effect/Layer";
 import * as Path from "effect/Path";
@@ -414,6 +416,19 @@ describe("Antigravity stderr compatibility", () => {
         `${ANTIGRAVITY_AUTH_STDOUT_PREFIX}${authorizationUrl}\n`,
       ).pipe(Effect.flip);
       expect(isAntigravitySignInRequiredError(error)).toBe(true);
+    }),
+  );
+
+  it.effect("rejects the Gemini Enterprise license picker during normal work", () =>
+    Effect.gen(function* () {
+      const handleStderr = makeAntigravityStderrHandler();
+      const exit = yield* handleStderr(
+        "Open the following link to choose your Gemini Enterprise license: http://127.0.0.1:46354/\n",
+      ).pipe(Effect.exit);
+      expect(Exit.isFailure(exit)).toBe(true);
+      if (Exit.isFailure(exit)) {
+        expect(isAntigravitySignInRequiredError(Cause.squash(exit.cause))).toBe(true);
+      }
     }),
   );
 
