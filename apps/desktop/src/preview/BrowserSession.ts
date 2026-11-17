@@ -28,7 +28,6 @@ export type BrowserSessionPartitionNamespace = "profile";
 // Electron's clipboard API uses clipboard-sanitized-write and checks both permission handlers.
 const ALLOWED_PREVIEW_PERMISSIONS: ReadonlySet<string> = new Set([
   "clipboard-sanitized-write",
-  "geolocation",
   // DesktopWindow confines HTML fullscreen to the guest's webview.
   "fullscreen",
   "pointerLock",
@@ -585,10 +584,14 @@ export const make = Effect.gen(function* BrowserSessionMake() {
       return Effect.try({
         try: () => {
           const browserSession = session.fromPartition(partition);
-          // Like Chrome, clipboard reads ask once per origin; both answers last for the session.
-          const clipboardReadDecisions = new Map<string, boolean>();
-          const confirmClipboardRead = (
+          // Location and clipboard decisions are remembered separately for each origin.
+          const permissionDecisions = {
+            "clipboard-read": new Map<string, boolean>(),
+            geolocation: new Map<string, boolean>(),
+          };
+          const confirmOriginPermission = (
             requester: WebContents,
+            permission: keyof typeof permissionDecisions,
             rawUrl: string | undefined,
             callback: (granted: boolean) => void,
           ): void => {
@@ -597,19 +600,24 @@ export const make = Effect.gen(function* BrowserSessionMake() {
               callback(false);
               return;
             }
-            const remembered = clipboardReadDecisions.get(origin);
+            const decisions = permissionDecisions[permission];
+            const remembered = decisions.get(origin);
             if (remembered !== undefined) {
               callback(remembered);
               return;
             }
+            const description =
+              permission === "geolocation"
+                ? "know your location"
+                : "see text and images copied to the clipboard";
             promptPermission(
               requester,
               {
                 buttons: ["Allow", "Block"],
-                message: `${truncateForPrompt(origin)} wants to see text and images copied to the clipboard`,
+                message: `${truncateForPrompt(origin)} wants to ${description}`,
               },
               (answer) => {
-                if (answer !== undefined) clipboardReadDecisions.set(origin, answer);
+                if (answer !== undefined) decisions.set(origin, answer);
                 callback(answer === true);
               },
             );
@@ -625,9 +633,10 @@ export const make = Effect.gen(function* BrowserSessionMake() {
                 );
                 return;
               }
-              if (permission === "clipboard-read") {
-                confirmClipboardRead(
+              if (permission === "clipboard-read" || permission === "geolocation") {
+                confirmOriginPermission(
                   webContents,
+                  permission,
                   "requestingUrl" in details ? details.requestingUrl : undefined,
                   callback,
                 );
@@ -637,8 +646,9 @@ export const make = Effect.gen(function* BrowserSessionMake() {
             },
           );
           browserSession.setPermissionCheckHandler((_webContents, permission, requestingOrigin) =>
-            permission === "clipboard-read"
-              ? clipboardReadDecisions.get(permissionOrigin(requestingOrigin) ?? "") === true
+            permission === "clipboard-read" || permission === "geolocation"
+              ? permissionDecisions[permission].get(permissionOrigin(requestingOrigin) ?? "") ===
+                true
               : ALLOWED_PREVIEW_PERMISSIONS.has(permission),
           );
           browserSession.webRequest.onBeforeSendHeaders(
