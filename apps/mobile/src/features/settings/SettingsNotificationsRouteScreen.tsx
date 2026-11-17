@@ -1,6 +1,7 @@
 import * as Dialog from "../../components/ui/Dialog";
 import {
   AuthRelayConfigureScope,
+  AuthRelayWriteScope,
   managedCapabilityDenial,
   type EnvironmentId,
 } from "@t3tools/contracts";
@@ -55,12 +56,15 @@ import { resolveAgentAwarenessPlatformPresentation } from "./SettingsRouteScreen
  * A policy that turns Connect off refuses relay links and preferences, which would fail the
  * whole batch, so those environments are skipped like ones this session cannot configure.
  */
-function canLinkEnvironmentToConnect(environmentId: EnvironmentId) {
+function canManageConnect(
+  environmentId: EnvironmentId,
+  scope: typeof AuthRelayConfigureScope | typeof AuthRelayWriteScope,
+) {
   const policy = appAtomRegistry.get(
     serverEnvironment.configValueAtom(environmentId),
   )?.managedPolicy;
   return (
-    readEnvironmentScope(environmentId, AuthRelayConfigureScope) &&
+    readEnvironmentScope(environmentId, scope) &&
     managedCapabilityDenial(policy, "connect") === undefined
   );
 }
@@ -300,7 +304,8 @@ function ConfiguredSettingsNotificationsRouteScreen() {
     const updateResult = await settleAsyncResult(() =>
       runtime.runPromiseExit(
         setLiveActivityUpdatesEnabled({
-          canConfigureEnvironment: canLinkEnvironmentToConnect,
+          canConfigureEnvironment: (id) => canManageConnect(id, AuthRelayConfigureScope),
+          canUpdateEnvironment: (id) => canManageConnect(id, AuthRelayWriteScope),
           enabled: true,
           previousEnabled: liveActivitiesPreferenceEnabled,
           clerkToken: tokenResult.value,
@@ -330,7 +335,7 @@ function ConfiguredSettingsNotificationsRouteScreen() {
       Dialog.alert(
         Platform.OS === "android" ? "Ongoing activity enabled" : "Live Activities enabled",
         environmentCount > 0
-          ? "Agent activity updates are enabled for environments this connection can configure."
+          ? "Agent activity updates are enabled for eligible environments."
           : "Agent activity updates are enabled. Add an environment to start receiving updates.",
       );
     } else {
@@ -378,7 +383,8 @@ function ConfiguredSettingsNotificationsRouteScreen() {
     const updateResult = await settleAsyncResult(() =>
       runtime.runPromiseExit(
         setLiveActivityUpdatesEnabled({
-          canConfigureEnvironment: canLinkEnvironmentToConnect,
+          canConfigureEnvironment: (id) => canManageConnect(id, AuthRelayConfigureScope),
+          canUpdateEnvironment: (id) => canManageConnect(id, AuthRelayWriteScope),
           enabled: false,
           previousEnabled: liveActivitiesPreferenceEnabled,
           clerkToken: token,
