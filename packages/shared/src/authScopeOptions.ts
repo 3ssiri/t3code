@@ -11,6 +11,7 @@ import {
   AuthPreviewOperateScope,
   AuthProvidersManageScope,
   AuthRelayReadScope,
+  AuthRelayConfigureScope,
   AuthRelayWriteScope,
   AuthSettingsWriteScope,
   AuthSourceControlWriteScope,
@@ -101,7 +102,12 @@ export const AUTH_SCOPE_OPTIONS: ReadonlyArray<{
   {
     scope: AuthRelayWriteScope,
     title: "Manage relay",
-    description: "Change managed tunnel connectivity.",
+    description: "Update relay preferences or unlink T3 Connect.",
+  },
+  {
+    scope: AuthRelayConfigureScope,
+    title: "Configure relay (admin)",
+    description: "Set up or replace T3 Connect, including its trusted pairing credential issuer.",
   },
 ];
 
