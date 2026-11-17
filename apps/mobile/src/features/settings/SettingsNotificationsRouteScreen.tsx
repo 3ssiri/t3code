@@ -1,6 +1,6 @@
 import * as Dialog from "../../components/ui/Dialog";
 import {
-  AuthRelayWriteScope,
+  AuthStandardClientScopes,
   managedCapabilityDenial,
   type EnvironmentId,
 } from "@t3tools/contracts";
@@ -60,7 +60,7 @@ function canLinkEnvironmentToConnect(environmentId: EnvironmentId) {
     serverEnvironment.configValueAtom(environmentId),
   )?.managedPolicy;
   return (
-    readEnvironmentScope(environmentId, AuthRelayWriteScope) &&
+    AuthStandardClientScopes.every((scope) => readEnvironmentScope(environmentId, scope)) &&
     managedCapabilityDenial(policy, "connect") === undefined
   );
 }

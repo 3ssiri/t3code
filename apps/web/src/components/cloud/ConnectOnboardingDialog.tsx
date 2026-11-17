@@ -2,8 +2,6 @@ import { useAuth } from "@clerk/react";
 import { useAtomValue } from "@effect/atom-react";
 import {
   AuthAccessWriteScope,
-  AuthRelayReadScope,
-  AuthRelayWriteScope,
   type AuthSessionState,
   managedCapabilityDenial,
 } from "@t3tools/contracts";
@@ -27,7 +25,12 @@ import {
   usePrimaryEnvironmentId,
 } from "~/state/environments";
 import { usePrimaryManagedPolicy } from "~/state/managedPolicy";
-import { environmentSession, readEnvironmentScope, useEnvironmentScope } from "~/state/session";
+import {
+  environmentSession,
+  readEnvironmentCanConfigureRelay,
+  useEnvironmentCanConfigureRelay,
+  useEnvironmentScope,
+} from "~/state/session";
 import {
   type T3ConnectAccountPageUrl,
   useT3ConnectAccountPage,
@@ -70,12 +73,11 @@ function ConfiguredConnectOnboardingDialog() {
       ? EMPTY_SESSION_STATE_ATOM
       : environmentSession.sessionStateAtom(primaryEnvironmentId),
   );
-  const canReadRelay = useEnvironmentScope(primaryEnvironmentId, AuthRelayReadScope);
-  const canWriteRelay = useEnvironmentScope(primaryEnvironmentId, AuthRelayWriteScope);
+  const canConfigureRelay = useEnvironmentCanConfigureRelay(primaryEnvironmentId);
   // A policy that turns Connect off leaves nothing to publish; reaching other devices still works.
   const connectAllowed =
     managedCapabilityDenial(usePrimaryManagedPolicy(), "connect") === undefined;
-  const canManageRelay = canReadRelay && canWriteRelay && connectAllowed;
+  const canManageRelay = canConfigureRelay && connectAllowed;
   const canRequireDeviceApproval = useEnvironmentScope(primaryEnvironmentId, AuthAccessWriteScope);
   const deviceApprovalRequired =
     usePrimaryEnvironment()?.serverConfig?.settings.requireConnectDeviceApproval === true;
@@ -186,11 +188,7 @@ function ConfiguredConnectOnboardingDialog() {
       setIsApplying(false);
       if (!saved) return;
     }
-    if (
-      primaryEnvironmentId === null ||
-      !readEnvironmentScope(primaryEnvironmentId, AuthRelayReadScope) ||
-      !readEnvironmentScope(primaryEnvironmentId, AuthRelayWriteScope)
-    ) {
+    if (primaryEnvironmentId === null || !readEnvironmentCanConfigureRelay(primaryEnvironmentId)) {
       setStep("devices");
       return;
     }
@@ -253,8 +251,7 @@ function ConfiguredConnectOnboardingDialog() {
                 if (
                   next === "publish" &&
                   (primaryEnvironmentId === null ||
-                    !readEnvironmentScope(primaryEnvironmentId, AuthRelayReadScope) ||
-                    !readEnvironmentScope(primaryEnvironmentId, AuthRelayWriteScope))
+                    !readEnvironmentCanConfigureRelay(primaryEnvironmentId))
                 )
                   return;
                 if (next) setStep(next);
@@ -279,16 +276,14 @@ function ConfiguredConnectOnboardingDialog() {
               onExposeEnvironmentChange={(enabled) => {
                 if (
                   primaryEnvironmentId !== null &&
-                  readEnvironmentScope(primaryEnvironmentId, AuthRelayReadScope) &&
-                  readEnvironmentScope(primaryEnvironmentId, AuthRelayWriteScope)
+                  readEnvironmentCanConfigureRelay(primaryEnvironmentId)
                 )
                   setExposeEnvironment(enabled);
               }}
               onPublishAgentActivityChange={(enabled) => {
                 if (
                   primaryEnvironmentId !== null &&
-                  readEnvironmentScope(primaryEnvironmentId, AuthRelayReadScope) &&
-                  readEnvironmentScope(primaryEnvironmentId, AuthRelayWriteScope)
+                  readEnvironmentCanConfigureRelay(primaryEnvironmentId)
                 )
                   setPublishAgentActivity(enabled);
               }}
