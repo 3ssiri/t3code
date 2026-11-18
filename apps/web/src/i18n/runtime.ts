@@ -1,4 +1,4 @@
-import { resolveLocale } from "@t3tools/client-runtime/locales";
+import { localeDirection, resolveLocale } from "@t3tools/client-runtime/locales";
 import { getTranslationsSnapshot } from "gt-react";
 
 import {
@@ -49,6 +49,7 @@ function activateLocale(locale: string): void {
   snapshot = { locale, translations: { ...loadedTranslations } };
   setActiveLocale(locale);
   document.documentElement.lang = locale;
+  document.documentElement.dir = localeDirection(locale);
   for (const listener of listeners) listener();
 }
 

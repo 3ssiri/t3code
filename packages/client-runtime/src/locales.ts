@@ -3,6 +3,7 @@ export const SYSTEM_LANGUAGE = "system";
 // Shown in their own language so a user can find theirs from any UI language.
 const NATIVE_LANGUAGE_NAMES: Readonly<Record<string, string>> = {
   en: "English",
+  ar: "العربية",
   de: "Deutsch",
   es: "Español",
   fr: "Français",
@@ -13,6 +14,14 @@ const NATIVE_LANGUAGE_NAMES: Readonly<Record<string, string>> = {
   sv: "Svenska",
   zh: "中文（简体）",
 };
+
+const RTL_LANGUAGES: ReadonlySet<string> = new Set(["ar", "fa", "he", "ur"]);
+
+/** Reading direction of a locale tag, matched on its language subtag. */
+export function localeDirection(locale: string): "ltr" | "rtl" {
+  const language = locale.trim().toLowerCase().split(/[-_]/)[0] ?? "";
+  return RTL_LANGUAGES.has(language) ? "rtl" : "ltr";
+}
 
 export function nativeLanguageName(locale: string): string {
   return NATIVE_LANGUAGE_NAMES[locale] ?? locale;
