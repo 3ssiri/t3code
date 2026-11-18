@@ -17,17 +17,22 @@ export function splitCatalog(en, size) {
   return chunks;
 }
 
-export function mergeChunks(en, chunks) {
+/** `labels` name each chunk (its file) in error messages. */
+export function mergeChunks(en, chunks, labels = chunks.map((_, i) => `chunk #${i + 1}`)) {
   const merged = {};
-  for (const chunk of chunks) {
+  const owner = {};
+  chunks.forEach((chunk, idx) => {
     for (const [key, value] of Object.entries(chunk)) {
-      if (!Object.hasOwn(en, key)) throw new Error(`unknown key in chunks: ${key}`);
-      if (Object.hasOwn(merged, key)) throw new Error(`duplicate key in chunks: ${key}`);
+      if (!Object.hasOwn(en, key)) throw new Error(`unknown key "${key}" in ${labels[idx]}`);
+      if (Object.hasOwn(merged, key)) {
+        throw new Error(`duplicate key "${key}" in ${owner[key]} and ${labels[idx]}`);
+      }
       merged[key] = value;
+      owner[key] = labels[idx];
     }
-  }
+  });
   const missing = Object.keys(en).filter((k) => !Object.hasOwn(merged, k));
-  if (missing.length) throw new Error(`missing ${missing.length} key(s), first: ${missing[0]}`);
+  if (missing.length) throw new Error(`missing ${missing.length} key(s), first: "${missing[0]}"`);
   return Object.fromEntries(Object.keys(en).map((k) => [k, merged[k]]));
 }
 
@@ -87,7 +92,7 @@ function runMerge(args) {
       ]),
     );
   });
-  const merged = mergeChunks(en, chunks);
+  const merged = mergeChunks(en, chunks, files);
   NodeFS.mkdirSync(NodePath.dirname(NodePath.resolve(args.out)), { recursive: true });
   writeJson(args.out, merged);
   console.log(`merged chunks=${files.length} keys=${Object.keys(merged).length}`);

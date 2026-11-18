@@ -7,6 +7,8 @@ import * as NodeURL from "node:url";
 const FSI = "\u2068";
 const PDI = "\u2069";
 const ARABIC_PLURAL = ["zero", "one", "two", "few", "many", "other"];
+const ISOLATES = new RegExp(`[${FSI}${PDI}]`, "g");
+const PROCLITICS = "(?:وال|بال|فال|كال|ولل|فلل|لل|ال|و|ب|ل|ف|ك)?";
 const BLOCK_KINDS = new Set(["plural", "select", "selectordinal"]);
 
 /**
@@ -164,14 +166,17 @@ function objectSignatures(value, out = []) {
   if (Array.isArray(value)) {
     for (const v of value) objectSignatures(v, out);
   } else if (value && typeof value === "object") {
-    const b =
-      value.d && value.d.b && typeof value.d.b === "object" ? Object.keys(value.d.b).sort() : null;
+    const d = value.d && typeof value.d === "object" ? value.d : null;
+    const b = d && d.b && typeof d.b === "object" ? Object.keys(d.b).sort() : null;
     out.push(
       JSON.stringify({
         t: value.t ?? null,
         i: value.i ?? null,
         k: value.k ?? null,
         v: value.v ?? null,
+        c: "c" in value,
+        d: d ? Object.keys(d).sort() : null,
+        dt: d ? (d.t ?? null) : null,
         b,
       }),
     );
@@ -218,6 +223,9 @@ export function validateEntry(key, en, ar, opts = {}) {
     const enText = flatten(en);
     const arText = flatten(ar);
 
+    const textOf = (v) => collectStrings(v).join("").replace(ISOLATES, "").trim();
+    if (textOf(en) !== "" && textOf(ar) === "") add("empty", "translation has no text");
+
     if (enArr) {
       const a = objectSignatures(en).sort();
       const b = objectSignatures(ar).sort();
@@ -236,8 +244,8 @@ export function validateEntry(key, en, ar, opts = {}) {
     if (trail(enText) !== trail(arText))
       add("edge-whitespace", "trailing whitespace differs from English");
 
-    if (enText === arText && !keepEnglish.has(key)) {
-      const stripped = arText.replace(/\{[A-Za-z_][\w]*\}/g, "").replace(/[⁨⁩]/g, "");
+    if (enText.replace(ISOLATES, "") === arText.replace(ISOLATES, "") && !keepEnglish.has(key)) {
+      const stripped = arText.replace(ISOLATES, "").replace(/\{[A-Za-z_]\w*\}/g, "");
       if (/[A-Za-z]/.test(stripped)) add("untranslated", "identical to English");
     }
 
@@ -252,7 +260,10 @@ export function validateEntry(key, en, ar, opts = {}) {
       )
         continue;
       if (
-        new RegExp(`(?<![\\p{L}\\p{N}])${escapeRegExp(variant)}(?![\\p{L}\\p{N}])`, "u").test(arAll)
+        new RegExp(
+          `(?<![\\p{L}\\p{N}])${PROCLITICS}${escapeRegExp(variant)}(?![\\p{L}\\p{N}])`,
+          "u",
+        ).test(arAll)
       ) {
         add("glossary-forbidden", `"${variant}" for "${term}"`);
       }
@@ -290,6 +301,17 @@ function checkIcu(en, ar, add) {
     );
   }
 
+  if (enShape) {
+    const lost = [
+      ...new Set(
+        enShape.branches
+          .filter((b) => b.kind !== "select")
+          .filter((b) => !arShape.branches.some((a) => a.kind === b.kind && a.arg === b.arg))
+          .map((b) => `${b.kind} on {${b.arg}}`),
+      ),
+    ];
+    if (lost.length) add("plural-forms", `dropped: ${lost.join(", ")}`);
+  }
   for (const branch of arShape.branches.filter((b) => b.kind === "plural")) {
     const have = new Set(branch.keys);
     const missing = ARABIC_PLURAL.filter((k) => !have.has(k));
@@ -356,28 +378,34 @@ export function validateCatalog(en, ar, opts = {}) {
  */
 export function parseGlossary(text) {
   const forbidden = [];
-  let termCol = 0;
-  let banCol = -1;
-  for (const line of text.split(/\r?\n/)) {
-    if (!line.trim().startsWith("|")) {
-      banCol = -1;
-      continue;
-    }
-    const cells = line
+  const lines = text.split(/\r?\n/);
+  const cellsOf = (line) =>
+    line
       .trim()
       .replace(/^\||\|$/g, "")
       .split("|")
       .map((c) => c.trim());
-    if (cells.every((c) => /^:?-{2,}:?$/.test(c))) continue;
-    const ban = cells.findIndex((c) => c.includes("ممنوع"));
-    if (ban !== -1) {
-      banCol = ban;
+  const isRow = (line) => line !== undefined && line.trim().startsWith("|");
+  const isSeparator = (line) => isRow(line) && cellsOf(line).every((c) => /^:?-{2,}:?$/.test(c));
+  const clean = (value) => value.replace(/[`*_]/g, "").trim();
+  let termCol = 0;
+  let banCol = -1;
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    if (!isRow(line)) {
+      banCol = -1;
+      continue;
+    }
+    if (isSeparator(line)) continue;
+    const cells = cellsOf(line);
+    if (isSeparator(lines[i + 1])) {
+      // A header row: only here does «ممنوع» name the forbidden column.
+      banCol = cells.findIndex((c) => c.includes("ممنوع"));
       const t = cells.findIndex((c) => /english|الإنجليزي|الانجليزي|المصطلح/i.test(c));
       termCol = t === -1 ? 0 : t;
       continue;
     }
     if (banCol === -1 || banCol >= cells.length) continue;
-    const clean = (s) => s.replace(/[`*_]/g, "").trim();
     const term = clean(cells[termCol] ?? "");
     if (!term) continue;
     for (const variant of cells[banCol].split(/[،,؛;/]/).map(clean)) {
