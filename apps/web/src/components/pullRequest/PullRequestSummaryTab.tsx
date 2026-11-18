@@ -446,7 +446,7 @@ export function PullRequestSection({
             aria-hidden
             className={cn(
               "size-3.5 text-muted-foreground/60 transition-transform",
-              open && "rotate-90",
+              open ? "rotate-90" : "rtl:rotate-180",
             )}
           />
         </CollapsibleTrigger>

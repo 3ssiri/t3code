@@ -161,7 +161,10 @@ export function SettingsScopeNotice({
             </Tooltip>
           ) : null}
         </span>
-        <ChevronRightIcon aria-hidden className="size-4 shrink-0 text-muted-foreground" />
+        <ChevronRightIcon
+          aria-hidden
+          className="size-4 shrink-0 text-muted-foreground rtl:rotate-180"
+        />
       </button>
     ));
   };

@@ -194,7 +194,7 @@ export function GuideStop({
                         <CollapsibleTrigger className="group flex w-full min-w-0 items-center gap-2 px-3 py-2 text-left text-xs outline-none hover:bg-accent/50 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset">
                           <ChevronRightIcon
                             aria-hidden
-                            className="size-3.5 shrink-0 text-muted-foreground group-data-panel-open:rotate-90"
+                            className="size-3.5 shrink-0 text-muted-foreground rtl:rotate-180 group-data-panel-open:rotate-90 rtl:group-data-panel-open:rotate-90"
                           />
                           <FileIcon
                             aria-hidden
@@ -285,7 +285,7 @@ export function GuideStop({
                   Next: <Var>{nextTitle}</Var>
                 </T>
               </span>
-              <ArrowRightIcon aria-hidden />
+              <ArrowRightIcon className="rtl:rotate-180" aria-hidden />
             </Button>
           ) : onFinish !== null ? (
             <Button onClick={onFinish}>

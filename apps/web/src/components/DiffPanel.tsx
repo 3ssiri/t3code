@@ -171,7 +171,7 @@ function DiffFileCollapseToggle({
         }
       >
         {collapsed ? (
-          <ChevronRightIcon className="size-4 text-muted-foreground/80" />
+          <ChevronRightIcon className="size-4 text-muted-foreground/80 rtl:rotate-180" />
         ) : (
           <ChevronDownIcon className="size-4 text-muted-foreground/80" />
         )}
@@ -1058,7 +1058,7 @@ export default function DiffPanel({
                 <span dir="ltr" className="min-w-0 max-w-48 truncate">
                   {comparisonHeadRef}
                 </span>
-                <ArrowRightIcon className="size-3.5 shrink-0 opacity-70" />
+                <ArrowRightIcon className="size-3.5 shrink-0 opacity-70 rtl:rotate-180" />
               </TooltipTrigger>
               <TooltipPopup side="top">
                 {`${comparisonHeadRef} → ${comparisonBaseRef}`}

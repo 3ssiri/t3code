@@ -1754,13 +1754,13 @@ function ContextCompactionTimelineRow({
           {row.title ? (
             <T>
               <Var>{row.title}</Var> <Var>{row.tokenCounts.before}</Var>
-              <ArrowRightIcon aria-hidden="true" className="size-3" />
+              <ArrowRightIcon aria-hidden="true" className="size-3 rtl:rotate-180" />
               <Var>{row.tokenCounts.after}</Var> tokens
             </T>
           ) : (
             <T>
               Context compacted <Var>{row.tokenCounts.before}</Var>
-              <ArrowRightIcon aria-hidden="true" className="size-3" />
+              <ArrowRightIcon aria-hidden="true" className="size-3 rtl:rotate-180" />
               <Var>{row.tokenCounts.after}</Var> tokens
             </T>
           )}
@@ -1877,7 +1877,7 @@ function TurnFoldTimelineRow({ row }: { row: Extract<TimelineRow, { kind: "turn-
           {row.expanded ? (
             <ChevronDownIcon className="size-3.5" />
           ) : (
-            <ChevronRightIcon className="size-3.5" />
+            <ChevronRightIcon className="size-3.5 rtl:rotate-180" />
           )}
         </button>
         <TimelineRowTimestamp
@@ -1911,7 +1911,7 @@ function AttemptFoldTimelineRow({ row }: { row: Extract<TimelineRow, { kind: "at
         {row.expanded ? (
           <ChevronDownIcon className="size-3.5 shrink-0 text-muted-foreground" />
         ) : (
-          <ChevronRightIcon className="size-3.5 shrink-0 text-muted-foreground" />
+          <ChevronRightIcon className="size-3.5 shrink-0 text-muted-foreground rtl:rotate-180" />
         )}
         <span className="text-xs font-medium text-foreground/80">
           {row.label}

@@ -529,7 +529,7 @@ function SubagentTimelineLink(props: {
       {open !== null ? (
         <ChevronRightIcon
           aria-hidden
-          className="size-3.5 shrink-0 text-muted-foreground/60 transition-colors group-hover/subagent:text-foreground"
+          className="size-3.5 shrink-0 text-muted-foreground/60 transition-colors group-hover/subagent:text-foreground rtl:rotate-180"
         />
       ) : null}
     </>
@@ -699,7 +699,7 @@ export function HandoffRow(props: {
             </span>
           ))}
           {fromEndpoints.length > 0 ? (
-            <ArrowRightIcon aria-hidden="true" className="size-3 shrink-0" />
+            <ArrowRightIcon aria-hidden="true" className="size-3 shrink-0 rtl:rotate-180" />
           ) : null}
           <HandoffEndpoint entries={entries} instanceId={to.instanceId} model={to.model} />
         </span>

@@ -45,7 +45,7 @@ export function PullRequestDetailHeaderBody({
               $context:
                 "screen reader label for an arrow between the base branch, read before it, and the head branch, read after it",
             })}
-            className="size-3.5 shrink-0 opacity-60"
+            className="size-3.5 shrink-0 opacity-60 rtl:rotate-180"
           />
           {head}
         </span>

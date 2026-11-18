@@ -1141,7 +1141,7 @@ function PullRequestCodeTab({
         }}
       >
         {collapsed ? (
-          <ChevronRightIcon className="size-4" />
+          <ChevronRightIcon className="size-4 rtl:rotate-180" />
         ) : (
           <ChevronDownIcon className="size-4" />
         )}
@@ -1866,7 +1866,10 @@ function PullRequestCodeTab({
                 </span>
                 <ChevronRightIcon
                   aria-hidden
-                  className={cn("size-3.5 transition-transform", orphansOpen && "rotate-90")}
+                  className={cn(
+                    "size-3.5 transition-transform",
+                    orphansOpen ? "rotate-90" : "rtl:rotate-180",
+                  )}
                 />
                 <span aria-hidden className="tabular-nums">
                   {orphanThreads.length}

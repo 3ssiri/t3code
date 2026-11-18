@@ -404,7 +404,7 @@ function ConfigureStep({
           </section>
           <div className="flex shrink-0 items-center justify-center text-muted-foreground">
             <ArrowDownIcon className="size-4 sm:hidden" />
-            <ArrowRightIcon className="hidden size-4 sm:block" />
+            <ArrowRightIcon className="hidden size-4 sm:block rtl:rotate-180" />
           </div>
           <section className="flex-1 space-y-2">
             <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">

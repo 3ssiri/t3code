@@ -230,7 +230,7 @@ export default function BinaryViewer(props: {
               else setFolder(folder.replace(/(?:[^/]+)?\/$/, ""));
             }}
           >
-            <ChevronLeftIcon className="size-3.5" />
+            <ChevronLeftIcon className="size-3.5 rtl:rotate-180" />
           </FileSurfaceAction>
           <span className="min-w-0 flex-1 truncate">
             {selectedPath ?? (folder || gt("Archive contents"))}
@@ -275,7 +275,7 @@ export default function BinaryViewer(props: {
               disabled={busy || page === 0}
               onPress={() => selectPage(page - 1)}
             >
-              <ChevronLeftIcon className="size-3.5" />
+              <ChevronLeftIcon className="size-3.5 rtl:rotate-180" />
             </FileSurfaceAction>
             <span className="shrink-0 tabular-nums" aria-live="polite">
               {table.count === 0
@@ -291,7 +291,7 @@ export default function BinaryViewer(props: {
               disabled={busy || (page + 1) * SQLITE_PAGE_SIZE >= table.count}
               onPress={() => selectPage(page + 1)}
             >
-              <ChevronRightIcon className="size-3.5" />
+              <ChevronRightIcon className="size-3.5 rtl:rotate-180" />
             </FileSurfaceAction>
           </div>
           <div

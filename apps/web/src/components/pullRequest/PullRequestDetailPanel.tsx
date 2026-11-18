@@ -1735,7 +1735,7 @@ export function PullRequestDetailPanel({
                         $context:
                           "screen reader label for an arrow between the base branch, read before it, and the head branch, read after it",
                       })}
-                      className="size-3 shrink-0 opacity-60"
+                      className="size-3 shrink-0 opacity-60 rtl:rotate-180"
                     />
                     <Tooltip>
                       <TooltipTrigger

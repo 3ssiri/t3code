@@ -36,7 +36,7 @@ export function PullRequestContextDetails({ metadata }: { metadata: PullRequestC
         <code dir="ltr" className="truncate">
           {metadata.headBranch}
         </code>
-        <ArrowRightIcon className="size-3 shrink-0" aria-hidden="true" />
+        <ArrowRightIcon className="size-3 shrink-0 rtl:rotate-180" aria-hidden="true" />
         <code dir="ltr" className="truncate">
           {metadata.baseBranch}
         </code>

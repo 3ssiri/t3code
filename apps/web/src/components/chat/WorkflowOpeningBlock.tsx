@@ -180,7 +180,7 @@ function WorkflowMemberRow(props: {
           {threadId !== null ? (
             <ChevronRightIcon
               aria-hidden
-              className="size-3.5 shrink-0 text-muted-foreground/60 transition-colors group-hover/subagent:text-foreground"
+              className="size-3.5 shrink-0 text-muted-foreground/60 transition-colors group-hover/subagent:text-foreground rtl:rotate-180"
             />
           ) : null}
         </TooltipTrigger>

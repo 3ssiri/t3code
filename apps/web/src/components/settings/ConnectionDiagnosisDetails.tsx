@@ -123,7 +123,7 @@ export function ConnectionDiagnosisSummary({
             aria-hidden
             className={cn(
               "size-3 transition-transform duration-150 motion-reduce:transition-none",
-              expanded && "rotate-90",
+              expanded ? "rotate-90" : "rtl:rotate-180",
             )}
           />
         </button>

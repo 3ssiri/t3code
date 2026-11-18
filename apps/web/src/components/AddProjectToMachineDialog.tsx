@@ -287,7 +287,7 @@ function AddProjectToMachineDialog({ request }: { request: AddProjectToMachineRe
                 <span>git clone</span>
                 <span className="flex w-full items-center">
                   <span className="h-px flex-1 bg-border" />
-                  <ArrowRightIcon className="-ms-1 size-3.5" aria-hidden />
+                  <ArrowRightIcon className="-ms-1 size-3.5 rtl:rotate-180" aria-hidden />
                 </span>
                 <span>
                   {selectedFiles.size === 0

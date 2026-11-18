@@ -158,7 +158,7 @@ export function PullRequestDetailGhost({
                 onClick={onBack}
                 aria-label={gt("Back to this thread's pull requests")}
               >
-                <ArrowLeftIcon aria-hidden className="size-3.5" />
+                <ArrowLeftIcon aria-hidden className="size-3.5 rtl:rotate-180" />
               </Button>
             ) : null}
             {seed ? (

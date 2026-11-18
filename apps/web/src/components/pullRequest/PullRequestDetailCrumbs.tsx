@@ -46,7 +46,7 @@ function BackButton({ onBack, focusable }: { onBack: () => void; focusable: bool
             className="-ml-1.5"
             aria-label={gt("Back to this thread's pull requests")}
           >
-            <ArrowLeftIcon aria-hidden className="size-3.5" />
+            <ArrowLeftIcon aria-hidden className="size-3.5 rtl:rotate-180" />
           </Button>
         }
       />

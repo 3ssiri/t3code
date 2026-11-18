@@ -2,6 +2,7 @@ import { RefreshIcon } from "~/components/ui/refresh-icon";
 import { Spinner } from "~/components/ui/spinner";
 import type { EnvironmentId } from "@t3tools/contracts";
 import { ArrowLeftIcon, ChevronRightIcon } from "lucide-react";
+import { useDirection } from "@base-ui/react/direction-provider";
 import { T, useGT, useMessages, Var } from "gt-react";
 import { useState } from "react";
 
@@ -86,6 +87,7 @@ function BreadcrumbMenuContent(props: {
   readonly workspaceMutationId: string | null;
 }) {
   const messages = useMessages();
+  const backKey = useDirection() === "rtl" ? "ArrowRight" : "ArrowLeft";
   const entriesQuery = useProjectEntriesQuery(
     props.environmentId,
     props.cwd,
@@ -112,7 +114,7 @@ function BreadcrumbMenuContent(props: {
       align="start"
       side="bottom"
       onKeyDown={(event) => {
-        if (event.key !== "ArrowLeft" || !canGoBack || parentPath === null) return;
+        if (event.key !== backKey || !canGoBack || parentPath === null) return;
         event.preventDefault();
         event.stopPropagation();
         props.onDirectoryChange(parentPath);
@@ -121,7 +123,7 @@ function BreadcrumbMenuContent(props: {
       {canGoBack && parentPath !== null ? (
         <>
           <MenuItem closeOnClick={false} onClick={() => props.onDirectoryChange(parentPath)}>
-            <ArrowLeftIcon />
+            <ArrowLeftIcon className="rtl:rotate-180" />
             <span className="truncate">
               <T>
                 Back to <Var>{pathLabel(parentPath, props.projectName)}</Var>
@@ -191,7 +193,7 @@ function BreadcrumbMenuContent(props: {
                   onClick={() => props.onDirectoryChange(entry.path)}
                 >
                   {row}
-                  <ChevronRightIcon />
+                  <ChevronRightIcon className="rtl:rotate-180" />
                 </MenuItem>
               ) : (
                 <MenuRadioItem
@@ -258,7 +260,7 @@ function FolderContentsMenu(props: FileBreadcrumbsProps & { readonly crumb: File
           />
         }
       >
-        <ChevronRightIcon className="size-3.5" />
+        <ChevronRightIcon className="size-3.5 rtl:rotate-180" />
       </MenuTrigger>
       {open ? (
         <BreadcrumbMenuContent
@@ -347,7 +349,7 @@ export function FileBreadcrumbs(props: FileBreadcrumbsProps) {
               {index === breadcrumbs.length - 1 ? null : hostPath ? (
                 <ChevronRightIcon
                   aria-hidden
-                  className="mx-1 size-3.5 shrink-0 text-muted-foreground/60"
+                  className="mx-1 size-3.5 shrink-0 text-muted-foreground/60 rtl:rotate-180"
                 />
               ) : (
                 <FolderContentsMenu {...props} crumb={crumb} />

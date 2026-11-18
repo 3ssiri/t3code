@@ -4,6 +4,7 @@ import {
   isReasoningControl,
   selectableProviderOptionChoices,
 } from "@t3tools/client-runtime/model-traits";
+import { useDirection } from "@base-ui/react/direction-provider";
 import type { ProviderOptionDescriptor, RuntimeMode } from "@t3tools/contracts";
 import type { EffortDisplay } from "@t3tools/contracts/settings";
 import { getProviderOptionCurrentLabel } from "@t3tools/shared/model";
@@ -389,6 +390,9 @@ function OptionMenuRow(props: {
   tabStop: boolean;
 }) {
   const gt = useGT();
+  const direction = useDirection();
+  const openKey = direction === "rtl" ? "ArrowLeft" : "ArrowRight";
+  const closeKey = direction === "rtl" ? "ArrowRight" : "ArrowLeft";
   const { descriptor, traits } = props;
   const [open, setOpen] = useState(false);
   const popupRef = useRef<HTMLDivElement>(null);
@@ -420,7 +424,7 @@ function OptionMenuRow(props: {
             aria-label={`${descriptor.label}: ${current}`}
             className={cn(OPTION_ROW, "data-popup-open:bg-foreground/[0.09]")}
             onKeyDown={(event) => {
-              if (event.key !== "ArrowRight") return;
+              if (event.key !== openKey) return;
               event.preventDefault();
               event.stopPropagation();
               setOpen(true);
@@ -431,12 +435,12 @@ function OptionMenuRow(props: {
         <OptionRowText label={descriptor.label} value={current} />
         <ChevronRightIcon
           aria-hidden="true"
-          className="-me-1 size-3.5 shrink-0 text-muted-foreground"
+          className="-me-1 size-3.5 shrink-0 text-muted-foreground rtl:rotate-180"
         />
       </MenuTrigger>
       <MenuPopup
         ref={popupRef}
-        side="right"
+        side="inline-end"
         align="start"
         sideOffset={6}
         // A full-width column on phones leaves no room beside it, so fall below or above.
@@ -445,7 +449,7 @@ function OptionMenuRow(props: {
         data-model-picker-option-menu
         {...composerFloatingLayerProps}
         onKeyDown={(event) => {
-          if (event.key !== "ArrowLeft") return;
+          if (event.key !== closeKey) return;
           event.preventDefault();
           event.stopPropagation();
           setOpen(false);

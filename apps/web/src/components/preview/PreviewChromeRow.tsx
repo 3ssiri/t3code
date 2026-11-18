@@ -112,7 +112,7 @@ export function PreviewChromeRow({
                 />
               }
             >
-              <ArrowLeft />
+              <ArrowLeft className="rtl:rotate-180" />
             </TooltipTrigger>
             <TooltipPopup>
               <T context="browser navigation">Back</T>
@@ -131,7 +131,7 @@ export function PreviewChromeRow({
                 />
               }
             >
-              <ArrowRight />
+              <ArrowRight className="rtl:rotate-180" />
             </TooltipTrigger>
             <TooltipPopup>
               <T context="browser navigation">Forward</T>

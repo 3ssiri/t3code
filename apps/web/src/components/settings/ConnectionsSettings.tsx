@@ -1383,7 +1383,7 @@ function ConnectionsSettingsContent({
                   <T>Permissions</T>
                   <ChevronRightIcon
                     aria-hidden
-                    className="size-3 text-muted-foreground group-open:rotate-90"
+                    className="size-3 text-muted-foreground rtl:rotate-180 group-open:rotate-90 rtl:group-open:rotate-90"
                   />
                 </summary>
                 <SessionPermissions
