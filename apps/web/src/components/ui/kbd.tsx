@@ -20,6 +20,7 @@ function Kbd({
         className,
       )}
       data-slot="kbd"
+      dir="ltr"
       {...props}
     />
   );
@@ -30,6 +31,7 @@ function KbdGroup({ className, ...props }: React.ComponentProps<"kbd">) {
     <kbd
       className={cn("inline-flex items-center gap-1", className)}
       data-slot="kbd-group"
+      dir="ltr"
       {...props}
     />
   );

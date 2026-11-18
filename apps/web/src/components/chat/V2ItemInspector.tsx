@@ -296,7 +296,7 @@ export const V2ItemInspector = memo(function V2ItemInspector(props: V2ItemInspec
       {item.type === "file_change" ? (
         <div className="space-y-2">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="font-mono text-muted-foreground">
+            <span dir="ltr" className="font-mono text-muted-foreground">
               {formatWorkspaceRelativePath(item.fileName, props.workspaceRoot)}
             </span>
             {item.additions !== undefined || item.deletions !== undefined ? (
@@ -325,7 +325,7 @@ export const V2ItemInspector = memo(function V2ItemInspector(props: V2ItemInspec
             <StructuredValue value={item.diffStr} />
           ) : null}
           {item.changes !== undefined && item.changes.length > 0 ? (
-            <ul className="space-y-1 font-mono text-muted-foreground">
+            <ul dir="ltr" className="space-y-1 font-mono text-muted-foreground">
               {item.changes.map((change) => (
                 <li key={JSON.stringify([change.operation, change.oldPath, change.path])}>
                   {change.operation} {change.oldPath ? `${change.oldPath} → ` : ""}
@@ -352,7 +352,7 @@ export const V2ItemInspector = memo(function V2ItemInspector(props: V2ItemInspec
         <ul className="space-y-1">
           {item.results.map((result) => (
             <li key={JSON.stringify(result)}>
-              <span className="font-mono text-foreground/80">
+              <span dir="ltr" className="font-mono text-foreground/80">
                 {formatWorkspaceRelativePath(result.fileName, props.workspaceRoot)}
                 {result.line === undefined ? "" : `:${result.line}`}
                 {result.column === undefined ? "" : `:${result.column}`}

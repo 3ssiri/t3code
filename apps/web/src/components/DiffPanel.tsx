@@ -1055,7 +1055,9 @@ export default function DiffPanel({
                   <span className="flex min-w-[min(3rem,calc(100%-2.75rem))] items-center gap-2 overflow-hidden @max-[20rem]/diff-refs:hidden" />
                 }
               >
-                <span className="min-w-0 max-w-48 truncate">{comparisonHeadRef}</span>
+                <span dir="ltr" className="min-w-0 max-w-48 truncate">
+                  {comparisonHeadRef}
+                </span>
                 <ArrowRightIcon className="size-3.5 shrink-0 opacity-70" />
               </TooltipTrigger>
               <TooltipPopup side="top">
@@ -1465,6 +1467,7 @@ export default function DiffPanel({
             ) : lazySource || renderablePatch?.kind === "files" ? (
               <div className="flex min-h-0 flex-1 overflow-hidden">
                 <div
+                  dir="ltr"
                   className="min-h-0 min-w-0 flex-1"
                   onClickCapture={(event) => {
                     const action = getDiffHeaderClickAction(event.nativeEvent);
@@ -1588,6 +1591,7 @@ export default function DiffPanel({
                     {renderablePatch?.kind === "raw" ? renderablePatch.reason : null}
                   </p>
                   <pre
+                    dir="ltr"
                     className={cn(
                       "max-h-[72vh] rounded-md border border-border/70 bg-background/70 p-3 font-mono text-2xs leading-relaxed text-muted-foreground/90",
                       wordWrap

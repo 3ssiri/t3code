@@ -131,9 +131,9 @@ export function PullRequestRowAuthor({
 export function PullRequestRowBranches({ head, base }: { head: string; base: string }) {
   return (
     <span className="flex min-w-0 items-center gap-1 font-mono">
-      <MiddleTruncate value={head} />
+      <MiddleTruncate value={head} dir="ltr" />
       <span className="shrink-0">→</span>
-      <MiddleTruncate value={base} className="max-w-[45%] shrink-0" />
+      <MiddleTruncate value={base} dir="ltr" className="max-w-[45%] shrink-0" />
     </span>
   );
 }

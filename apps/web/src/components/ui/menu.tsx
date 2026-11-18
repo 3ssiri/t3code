@@ -302,6 +302,7 @@ function MenuShortcut({ className, ...props }: React.ComponentProps<"kbd">) {
         className,
       )}
       data-slot="menu-shortcut"
+      dir="ltr"
       {...props}
     />
   );

@@ -294,7 +294,7 @@ function LinkRowImpl({
                 <>
                   <Tooltip>
                     <TooltipTrigger render={<span className="flex min-w-0 max-w-32 font-mono" />}>
-                      <MiddleTruncate value={link.repository} showTitle={false} />
+                      <MiddleTruncate value={link.repository} dir="ltr" showTitle={false} />
                     </TooltipTrigger>
                     <TooltipPopup>{link.repository}</TooltipPopup>
                   </Tooltip>

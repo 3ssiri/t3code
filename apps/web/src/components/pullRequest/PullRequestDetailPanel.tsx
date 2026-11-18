@@ -1740,7 +1740,7 @@ export function PullRequestDetailPanel({
                     <Tooltip>
                       <TooltipTrigger
                         render={
-                          <code className="flex min-w-0 flex-1">
+                          <code dir="ltr" className="flex min-w-0 flex-1">
                             <MiddleTruncate value={detail.headBranch} showTitle={false} />
                           </code>
                         }

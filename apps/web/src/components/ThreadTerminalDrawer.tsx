@@ -1914,7 +1914,7 @@ export default function ThreadTerminalDrawer({
             hasTerminalSidebar && "gap-1.5",
           )}
         >
-          <div className="min-w-0 flex-1">
+          <div dir="ltr" className="min-w-0 flex-1">
             <TerminalSplitPanes
               terminalIds={visibleTerminalIds}
               splitDirection={splitDirection}

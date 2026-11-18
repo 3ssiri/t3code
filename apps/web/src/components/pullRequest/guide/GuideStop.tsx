@@ -200,7 +200,7 @@ export function GuideStop({
                             aria-hidden
                             className="size-3.5 shrink-0 text-muted-foreground"
                           />
-                          <span className="min-w-0 truncate font-mono text-foreground">
+                          <span dir="ltr" className="min-w-0 truncate font-mono text-foreground">
                             {file.path}
                           </span>
                           {file.note !== undefined && file.note.trim() !== "" ? (

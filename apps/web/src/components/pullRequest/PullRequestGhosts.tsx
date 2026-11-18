@@ -279,7 +279,7 @@ export function PullRequestDetailGhost({
               base={
                 <span className="inline-flex min-w-0 max-w-[40%] shrink-0 items-center gap-1">
                   {seed ? (
-                    <code className="flex min-w-0">
+                    <code dir="ltr" className="flex min-w-0">
                       <MiddleTruncate value={seed.baseBranch} />
                     </code>
                   ) : (

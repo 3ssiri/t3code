@@ -259,7 +259,7 @@ function SetupDetails({ snapshot }: { snapshot: WorktreeSetupSnapshot }) {
           <dt className="text-foreground/80">
             <T>Branch</T>
           </dt>
-          <dd className="min-w-0 font-mono">
+          <dd dir="ltr" className="min-w-0 font-mono">
             <MiddleTruncate value={snapshot.branch} className="flex" />
           </dd>
         </>
@@ -269,7 +269,7 @@ function SetupDetails({ snapshot }: { snapshot: WorktreeSetupSnapshot }) {
           <dt className="text-foreground/80">
             <T context="git base branch">Base</T>
           </dt>
-          <dd className="min-w-0 font-mono">
+          <dd dir="ltr" className="min-w-0 font-mono">
             <MiddleTruncate value={snapshot.baseRef} className="flex" />
           </dd>
         </>
@@ -279,7 +279,7 @@ function SetupDetails({ snapshot }: { snapshot: WorktreeSetupSnapshot }) {
           <dt className="text-foreground/80">
             <T>Path</T>
           </dt>
-          <dd className="min-w-0 font-mono">
+          <dd dir="ltr" className="min-w-0 font-mono">
             <MiddleTruncate value={snapshot.worktreePath} className="flex" />
           </dd>
         </>

@@ -12,7 +12,7 @@ export function PreviousWorktreeItemContent({ branch }: { branch: string | null 
           <T>Previous worktree</T>
         </span>
         {branch ? (
-          <span className="min-w-0 text-xs text-muted-foreground">
+          <span dir="ltr" className="min-w-0 text-xs text-muted-foreground">
             <MiddleTruncate value={branch} />
           </span>
         ) : null}

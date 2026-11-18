@@ -278,7 +278,7 @@ function AddProjectToMachineDialog({ request }: { request: AddProjectToMachineRe
                   />
                   <span className="truncate">{source?.label ?? gt("This machine")}</span>
                 </span>
-                <span className="flex min-w-0 font-mono text-muted-foreground text-xs">
+                <span dir="ltr" className="flex min-w-0 font-mono text-muted-foreground text-xs">
                   <MiddleTruncate value={project?.workspaceRoot ?? ""} />
                 </span>
               </div>
@@ -331,7 +331,7 @@ function AddProjectToMachineDialog({ request }: { request: AddProjectToMachineRe
                     <span className="truncate">{target?.label ?? gt("No machine available")}</span>
                   </span>
                 )}
-                <span className="flex min-w-0 font-mono text-muted-foreground text-xs">
+                <span dir="ltr" className="flex min-w-0 font-mono text-muted-foreground text-xs">
                   <MiddleTruncate value={destinationPath} />
                 </span>
               </div>

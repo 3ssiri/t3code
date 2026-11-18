@@ -216,6 +216,7 @@ function CommandShortcut({ className, ...props }: React.ComponentProps<"kbd">) {
         className,
       )}
       data-slot="command-shortcut"
+      dir="ltr"
       {...props}
     />
   );

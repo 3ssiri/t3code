@@ -896,6 +896,7 @@ export function BranchToolbarBranchSelector({
             <ComposerContextLabel displayMode={displayMode}>
               <MiddleTruncate
                 value={triggerLabel}
+                dir={triggerLabel === resolvedActiveBranch ? "ltr" : undefined}
                 variant="cap-aligned"
                 className="w-full"
                 aria-hidden
