@@ -278,7 +278,7 @@ function SubagentAvatar({
       {status ? (
         <span
           className={cn(
-            "absolute -right-px size-2 rounded-full ring-2 ring-background",
+            "absolute -end-px size-2 rounded-full ring-2 ring-background",
             anyInstanceBadge ? "-top-px" : "-bottom-px",
             subagentStatusVisual(status).dotClass,
           )}
@@ -535,7 +535,7 @@ function SubagentTimelineLink(props: {
     </>
   );
   const className =
-    "group/subagent flex w-full min-w-0 items-center gap-2.5 rounded-md px-2 py-1.5 text-left";
+    "group/subagent flex w-full min-w-0 items-center gap-2.5 rounded-md px-2 py-1.5 text-start";
   return (
     <Tooltip>
       <TooltipTrigger
@@ -692,7 +692,7 @@ export function HandoffRow(props: {
                 model={endpoint.model}
               />
               {index < fromEndpoints.length - 1 ? (
-                <span aria-hidden="true" className="ml-0.5">
+                <span aria-hidden="true" className="ms-0.5">
                   ,
                 </span>
               ) : null}

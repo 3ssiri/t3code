@@ -63,8 +63,8 @@ export function useComposerRestingTransition(
     footer?.style.removeProperty("position");
     footer?.style.removeProperty("top");
     footer?.style.removeProperty("bottom");
-    footer?.style.removeProperty("left");
-    footer?.style.removeProperty("right");
+    footer?.style.removeProperty("inset-inline-start");
+    footer?.style.removeProperty("inset-inline-end");
     footer?.style.removeProperty("height");
     clearOverlayPin();
   };
@@ -185,11 +185,11 @@ export function useComposerRestingTransition(
         footer.style.bottom = `${String(footerBottom)}px`;
         footer.style.height = "3rem";
         if (nextIsCollapsed) {
-          footer.style.left = "auto";
-          footer.style.right = "1px";
+          footer.style.insetInlineStart = "auto";
+          footer.style.insetInlineEnd = "1px";
         } else {
-          footer.style.left = "1px";
-          footer.style.right = "1px";
+          footer.style.insetInlineStart = "1px";
+          footer.style.insetInlineEnd = "1px";
         }
       }
 

@@ -272,7 +272,7 @@ export function PreviewChromeRow({
             >
               <Camera className={cn(recording && "text-destructive")} />
               {recording ? (
-                <span className="absolute right-0.5 top-0.5 size-1.5 motion-safe:animate-status-pulse rounded-full bg-destructive" />
+                <span className="absolute end-0.5 top-0.5 size-1.5 motion-safe:animate-status-pulse rounded-full bg-destructive" />
               ) : null}
             </TooltipTrigger>
             <TooltipPopup>
@@ -309,7 +309,7 @@ export function PreviewChromeRow({
       <div
         aria-hidden
         data-loading={loading}
-        className="preview-loading-progress pointer-events-none absolute bottom-0 left-0 z-10 h-0.5 w-full origin-left rounded-r-full bg-primary"
+        className="preview-loading-progress pointer-events-none absolute bottom-0 start-0 z-10 h-0.5 w-full origin-left rtl:origin-right rounded-e-full bg-primary"
         style={{ boxShadow: "0 0 6px 1px var(--color-ring)" }}
       />
     </div>

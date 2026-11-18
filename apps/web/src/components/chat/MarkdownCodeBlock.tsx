@@ -208,7 +208,7 @@ export function MarkdownCodeBlock({
   if (diagram) {
     return (
       <div className="my-[0.65rem] border border-transparent" data-language={language}>
-        <div className="flex items-center justify-end gap-0.5 pt-1.5 pr-1.5 select-none">
+        <div className="flex items-center justify-end gap-0.5 pt-1.5 pe-1.5 select-none">
           {viewToggle}
           {copyButton}
         </div>

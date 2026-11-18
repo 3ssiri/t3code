@@ -35,15 +35,15 @@ export const DiffStatLabel = memo(function DiffStatLabel(props: {
       className={cn(
         layout === "inline"
           ? "inline-flex items-center gap-1 tabular-nums align-middle"
-          : "inline-grid grid-cols-[4ch_4ch] gap-2 text-right tabular-nums align-middle",
+          : "inline-grid grid-cols-[4ch_4ch] gap-2 text-end tabular-nums align-middle",
         className,
       )}
     >
       <span aria-hidden="true" className="font-mono text-diff-addition-foreground">
-        +{formatCompactDiffCount(additions)}
+        <bdi>+{formatCompactDiffCount(additions)}</bdi>
       </span>
       <span aria-hidden="true" className="font-mono text-diff-deletion-foreground">
-        -{formatCompactDiffCount(deletions)}
+        <bdi>-{formatCompactDiffCount(deletions)}</bdi>
       </span>
     </span>
   );

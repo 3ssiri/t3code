@@ -91,14 +91,20 @@ export function attachTimelineViewport(
   const handleTouchMove = () => emit({ source: "touch" });
   // Scrollbar drags produce no wheel/touch events. The scroll node's own padding
   // also targets it, so only a press at its trailing edge counts.
-  const handlePointerDown = (event: PointerEvent) =>
+  const handlePointerDown = (event: PointerEvent) => {
+    const bounds = scrollNode.getBoundingClientRect();
+    const distanceFromScrollbarEdge =
+      getComputedStyle(scrollNode).direction === "rtl"
+        ? event.clientX - bounds.left
+        : bounds.right - event.clientX;
     emit({
       source: "pointer",
       onScrollbar:
         event.target === scrollNode &&
-        scrollNode.getBoundingClientRect().right - event.clientX <=
+        distanceFromScrollbarEdge <=
           Math.max(SCROLLBAR_HIT_PX, scrollNode.offsetWidth - scrollNode.clientWidth),
     });
+  };
   // Clicking message text can leave DOM focus on body, and keyboard scrolling
   // bypasses wheel and pointer events, so scroll keys are heard app-wide.
   // Body keys belong to the main timeline; a side chat's hears only its own.

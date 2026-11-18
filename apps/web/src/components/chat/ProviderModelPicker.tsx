@@ -5,6 +5,7 @@ import {
   type ProviderDriverKind,
   type ResolvedKeybindingsConfig,
 } from "@t3tools/contracts";
+import { useDirection } from "@base-ui/react/direction-provider";
 import { RegistryContext } from "@effect/atom-react";
 import { T, useGT } from "gt-react";
 import {
@@ -40,13 +41,14 @@ function lockBackgroundScroll(popup: HTMLElement | null) {
   const { documentElement, body } = document;
   const previousDocumentOverscrollBehavior = documentElement.style.overscrollBehavior;
   const previousBodyOverflow = body.style.overflow;
-  const previousBodyPaddingRight = body.style.paddingRight;
+  const scrollbarSide = documentElement.dir === "rtl" ? "paddingLeft" : "paddingRight";
+  const previousBodyPadding = body.style[scrollbarSide];
   const scrollbarWidth = window.innerWidth - documentElement.clientWidth;
 
   documentElement.style.overscrollBehavior = "contain";
   body.style.overflow = "hidden";
   if (scrollbarWidth > 0) {
-    body.style.paddingRight = `${scrollbarWidth}px`;
+    body.style[scrollbarSide] = `${scrollbarWidth}px`;
   }
 
   const shouldAllowOverlayScroll = (target: EventTarget | null) => {
@@ -81,7 +83,7 @@ function lockBackgroundScroll(popup: HTMLElement | null) {
     document.removeEventListener("touchmove", preventBackgroundTouchMove, { capture: true });
     documentElement.style.overscrollBehavior = previousDocumentOverscrollBehavior;
     body.style.overflow = previousBodyOverflow;
-    body.style.paddingRight = previousBodyPaddingRight;
+    body.style[scrollbarSide] = previousBodyPadding;
   };
 }
 
@@ -130,6 +132,7 @@ export const ProviderModelPicker = memo(function ProviderModelPicker(props: {
   footer?: ReactNode;
 }) {
   const composerFloatingLayerProps = useComposerMenuProps();
+  const towardListKey = useDirection() === "rtl" ? "ArrowRight" : "ArrowLeft";
   const [uncontrolledIsMenuOpen, setUncontrolledIsMenuOpen] = useState(false);
   const isMenuOpen = props.open ?? uncontrolledIsMenuOpen;
   const registry = useContext(RegistryContext);
@@ -426,7 +429,7 @@ export const ProviderModelPicker = memo(function ProviderModelPicker(props: {
                 iconClassName={cn("size-4", props.activeProviderIconClassName)}
                 indicatorBackground={props.instanceIndicatorBackground ?? "var(--contrast-input)"}
                 badgeClassName={cn(
-                  "right-[-0.125rem] bottom-[-0.125rem] h-3 min-w-3 px-0.5 text-5xs",
+                  "end-[-0.125rem] bottom-[-0.125rem] h-3 min-w-3 px-0.5 text-5xs",
                   size === "xs" && "shadow-none",
                 )}
               />
@@ -478,9 +481,14 @@ export const ProviderModelPicker = memo(function ProviderModelPicker(props: {
                 {picker}
                 <div
                   data-model-picker-effort
-                  className="flex min-h-0 w-48 flex-col sm:shrink-0 border-l border-border/70 bg-muted/40 max-sm:h-64 max-sm:w-full max-sm:border-t max-sm:border-l-0"
+                  className="flex min-h-0 w-48 flex-col sm:shrink-0 border-s border-border/70 bg-muted/40 max-sm:h-64 max-sm:w-full max-sm:border-t max-sm:border-s-0"
                   onKeyDown={(event) => {
-                    if (event.key !== "ArrowLeft" || event.altKey || event.ctrlKey || event.metaKey)
+                    if (
+                      event.key !== towardListKey ||
+                      event.altKey ||
+                      event.ctrlKey ||
+                      event.metaKey
+                    )
                       return;
                     event.preventDefault();
                     event.stopPropagation();

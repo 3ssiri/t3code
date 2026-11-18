@@ -1,3 +1,4 @@
+import { useDirection } from "@base-ui/react/direction-provider";
 import { Toolbar } from "@base-ui/react/toolbar";
 import { type ProviderInstanceId } from "@t3tools/contracts";
 import { memo, useLayoutEffect, useRef, useState } from "react";
@@ -58,6 +59,7 @@ export const ModelPickerSidebar = memo(function ModelPickerSidebar(props: {
   getDisabledInstanceTooltip?: (entry: ProviderInstanceEntry) => string;
 }) {
   const m = useMessages();
+  const towardListKey = useDirection() === "rtl" ? "ArrowLeft" : "ArrowRight";
   const handleSelect = (instanceId: ProviderInstanceId | "favorites") => {
     props.onSelectInstance(instanceId);
   };
@@ -94,7 +96,7 @@ export const ModelPickerSidebar = memo(function ModelPickerSidebar(props: {
       orientation="vertical"
       onKeyDown={(event) => {
         if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
-        if (event.key === "ArrowRight") {
+        if (event.key === towardListKey) {
           event.preventDefault();
           props.onFocusSearch();
           return;
@@ -106,7 +108,7 @@ export const ModelPickerSidebar = memo(function ModelPickerSidebar(props: {
           {selectedIndicatorTop !== null ? (
             <div
               data-model-picker-selected-indicator="true"
-              className="pointer-events-none absolute right-1 z-10 h-5 w-0.75 rounded-full bg-primary transition-[top] duration-200 ease-out"
+              className="pointer-events-none absolute end-1 z-10 h-5 w-0.75 rounded-full bg-primary transition-[top] duration-200 ease-out"
               style={{ top: selectedIndicatorTop }}
             />
           ) : null}
