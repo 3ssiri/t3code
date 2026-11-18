@@ -1806,22 +1806,10 @@ export default function GitActionsControl({
                 <Tooltip>
                   <TooltipTrigger
                     render={
-                      <span className="pointer-events-auto flex min-w-0 items-baseline gap-1 font-normal text-muted-foreground" />
+                      <span className="pointer-events-auto min-w-0 truncate font-normal text-muted-foreground" />
                     }
                   >
-                    {resolvedChangesTotals?.baseRef ? (
-                      <>
-                        <span className="shrink-0">
-                          <T>vs</T>
-                        </span>
-                        {/* LTR so truncation keeps the start of the ref name. */}
-                        <span dir="ltr" className="min-w-0 truncate">
-                          {resolvedChangesTotals.baseRef}
-                        </span>
-                      </>
-                    ) : (
-                      <span className="min-w-0 truncate">{changesBaseLabel}</span>
-                    )}
+                    {changesBaseLabel}
                   </TooltipTrigger>
                   <TooltipPopup side="top" className="max-w-96 break-words">
                     {changesBaseLabel}
