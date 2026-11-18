@@ -115,3 +115,17 @@ NodeTest.test("parseGlossary reads the forbidden column from a real header only"
     { term: "agent", variant: "عميل" },
   ]);
 });
+
+NodeTest.test("parseGlossary finds columns by header name with the 5-column layout", () => {
+  const md = [
+    "| English | العربية | ممنوع | ملاحظة | صيغة الأمر |",
+    "|---|---|---|---|---|",
+    "| thread | محادثة | خيط، سلسلة | لا تقل ممنوع هنا | حادث |",
+    "| agent | وكيل | عميل | | وجّه |",
+  ].join("\n");
+  NodeAssert.deepEqual(parseGlossary(md), [
+    { term: "thread", variant: "خيط" },
+    { term: "thread", variant: "سلسلة" },
+    { term: "agent", variant: "عميل" },
+  ]);
+});
