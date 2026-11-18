@@ -124,11 +124,8 @@ function RootRouteNotFoundView() {
         </h1>
         <p className="text-sm text-muted-foreground">
           <T>
-            This link doesn't point to a page in{" "}
-            <Var>
-              <bdi>{APP_DISPLAY_NAME}</bdi>
-            </Var>
-            . Go home to choose a project or start a thread.
+            This link doesn't point to a page in <Var>{APP_DISPLAY_NAME}</Var>. Go home to choose a
+            project or start a thread.
           </T>
         </p>
         <Button render={<Link to="/" replace />}>
