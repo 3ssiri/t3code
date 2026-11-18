@@ -109,7 +109,9 @@ function main(argv) {
   const root = NodePath.resolve(here, "..", "..");
   const args = parseArgs(argv);
   if (!args.app || !args.out) {
-    console.error("usage: context-map.mjs --app apps/web --out <context.json>");
+    console.error(
+      "usage: context-map.mjs --app apps/web [--also packages/client-runtime] --out <context.json>",
+    );
     return 2;
   }
   const appDir = NodePath.resolve(args.app);
@@ -118,10 +120,20 @@ function main(argv) {
   );
   const { hashMessage } = requireFromDesktop("gt-i18n/internal");
 
+  // Shared packages (e.g. packages/client-runtime) compile into the app's catalog too.
+  const srcDirs = [
+    appDir,
+    ...(args.also ?? "")
+      .split(",")
+      .filter(Boolean)
+      .map((d) => NodePath.resolve(d)),
+  ];
   const map = {};
-  for (const file of walk(NodePath.join(appDir, "src"))) {
-    for (const { message, context } of extractContexts(NodeFS.readFileSync(file, "utf8"))) {
-      map[hashMessage(message, { $context: context, $format: "ICU" })] = { context };
+  for (const dir of srcDirs) {
+    for (const file of walk(NodePath.join(dir, "src"))) {
+      for (const { message, context } of extractContexts(NodeFS.readFileSync(file, "utf8"))) {
+        map[hashMessage(message, { $context: context, $format: "ICU" })] = { context };
+      }
     }
   }
   const enPath = NodePath.join(appDir, "src", "i18n", "translations", "en.json");
