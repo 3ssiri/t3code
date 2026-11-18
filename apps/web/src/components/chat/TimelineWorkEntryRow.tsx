@@ -678,7 +678,9 @@ function WorkEntryLogRow(props: WorkEntryRowProps) {
           ) : (
             <>
               {expandedBody ? (
-                <pre className={toolCallExpandedBodyClassName}>{expandedBody}</pre>
+                <pre dir="auto" className={toolCallExpandedBodyClassName}>
+                  {expandedBody}
+                </pre>
               ) : null}
               {plainOutputFetches && workEntry.projectedItem ? (
                 <FetchedToolOutput

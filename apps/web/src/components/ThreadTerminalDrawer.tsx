@@ -1857,8 +1857,9 @@ export default function ThreadTerminalDrawer({
     >
       {resizeHandle}
 
+      {/* The terminal is an LTR surface, so its toolbar stays on the physical right. */}
       {!hasTerminalSidebar && (
-        <div className="pointer-events-none absolute end-2 top-2 z-20">
+        <div className="pointer-events-none absolute right-2 top-2 z-20">
           <div className="pointer-events-auto inline-flex items-center overflow-hidden rounded-md border border-border/80 bg-background shadow-xs">
             <TerminalActionButton
               disabled={!canOperateTerminal}

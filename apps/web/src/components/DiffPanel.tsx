@@ -171,7 +171,7 @@ function DiffFileCollapseToggle({
         }
       >
         {collapsed ? (
-          <ChevronRightIcon className="size-4 text-muted-foreground/80 rtl:rotate-180" />
+          <ChevronRightIcon className="size-4 text-muted-foreground/80" />
         ) : (
           <ChevronDownIcon className="size-4 text-muted-foreground/80" />
         )}

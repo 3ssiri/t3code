@@ -255,10 +255,12 @@ function IconStat({
           tone === "danger" && "text-destructive",
         )}
       >
-        {value}
+        <bdi>{value}</bdi>
       </div>
       {detail ? (
-        <div className="mt-1.5 truncate text-3xs text-muted-foreground/60">{detail}</div>
+        <div className="mt-1.5 truncate text-3xs text-muted-foreground/60">
+          <bdi>{detail}</bdi>
+        </div>
       ) : null}
     </div>
   );
@@ -282,7 +284,9 @@ function AggregateCard({
           {label}
         </div>
         <div className="rounded-md bg-muted/55 px-1.5 py-0.5 font-mono text-3xs tabular-nums text-muted-foreground/70">
-          {aggregate.processCount} {aggregate.processCount === 1 ? "process" : "processes"}
+          <bdi>
+            {aggregate.processCount} {aggregate.processCount === 1 ? "process" : "processes"}
+          </bdi>
         </div>
       </div>
       <div className="mt-3.5 grid grid-cols-2 gap-x-4 gap-y-2.5">
@@ -302,7 +306,7 @@ function MetricPair({ label, value }: { label: string; value: string }) {
         {label}
       </div>
       <div className="truncate font-mono text-xs font-medium tabular-nums text-foreground/90">
-        {value}
+        <bdi>{value}</bdi>
       </div>
     </div>
   );
@@ -360,7 +364,7 @@ function DetailRow({
           valueClassName,
         )}
       >
-        {value}
+        <bdi>{value}</bdi>
       </span>
     </div>
   );
@@ -656,26 +660,26 @@ function ProcessTable({
                   {categoryLabel(process.category, messages)}
                 </td>
                 <td className="px-3 py-2 text-end font-mono tabular-nums">
-                  {process.cpuPercent.toFixed(1)}%
+                  <bdi>{process.cpuPercent.toFixed(1)}%</bdi>
                 </td>
                 <td className="px-3 py-2 text-end font-mono tabular-nums">
-                  {formatCpuTime(process.cpuTimeMs / 1_000, messages)}
+                  <bdi>{formatCpuTime(process.cpuTimeMs / 1_000, messages)}</bdi>
                 </td>
                 <td className="px-3 py-2 text-end font-mono tabular-nums">
-                  {formatBytes(process.residentBytes)}
+                  <bdi>{formatBytes(process.residentBytes)}</bdi>
                 </td>
                 <td className="px-3 py-2 text-end font-mono tabular-nums text-info-foreground">
-                  {formatRate(process.ioReadBytesPerSecond)}
+                  <bdi>{formatRate(process.ioReadBytesPerSecond)}</bdi>
                 </td>
                 <td className="px-3 py-2 text-end font-mono tabular-nums text-warning-foreground">
-                  {formatRate(process.ioWriteBytesPerSecond)}
+                  <bdi>{formatRate(process.ioWriteBytesPerSecond)}</bdi>
                 </td>
                 <td className="px-3 py-2 text-end font-mono tabular-nums text-muted-foreground">
-                  {formatBytes(process.ioReadBytes)}
+                  <bdi>{formatBytes(process.ioReadBytes)}</bdi>
                 </td>
                 <td className="px-3 py-2 text-end font-mono tabular-nums text-muted-foreground">
                   <Tooltip>
-                    <TooltipTrigger render={<span>{formatBytes(process.ioWriteBytes)}</span>} />
+                    <TooltipTrigger render={<bdi>{formatBytes(process.ioWriteBytes)}</bdi>} />
                     <TooltipPopup side="top">
                       {ioSemanticsLabel(process.ioSemantics, messages)}
                     </TooltipPopup>
@@ -786,19 +790,19 @@ function HistoryProcessTable({
                   {categoryLabel(process.category, messages)}
                 </td>
                 <td className="px-3 py-2 text-end font-mono tabular-nums">
-                  {formatCpuTime(process.cpuTimeMs / 1_000, messages)}
+                  <bdi>{formatCpuTime(process.cpuTimeMs / 1_000, messages)}</bdi>
                 </td>
                 <td className="px-3 py-2 text-end font-mono tabular-nums">
                   {process.maxCpuPercent.toFixed(1)}%
                 </td>
                 <td className="px-3 py-2 text-end font-mono tabular-nums">
-                  {formatBytes(process.peakRssBytes)}
+                  <bdi>{formatBytes(process.peakRssBytes)}</bdi>
                 </td>
                 <td className="px-3 py-2 text-end font-mono tabular-nums text-info-foreground">
-                  {formatBytes(process.ioReadBytes)}
+                  <bdi>{formatBytes(process.ioReadBytes)}</bdi>
                 </td>
                 <td className="px-3 py-2 text-end font-mono tabular-nums text-warning-foreground">
-                  {formatBytes(process.ioWriteBytes)}
+                  <bdi>{formatBytes(process.ioWriteBytes)}</bdi>
                 </td>
                 <td className="px-3 py-2 text-end font-mono tabular-nums text-muted-foreground">
                   {process.sampleCount}
@@ -864,10 +868,10 @@ function AttributionTable({ entries }: { entries: ReadonlyArray<ResourceAttribut
               </td>
               <td className="truncate px-3 py-2 text-muted-foreground">{entry.operation}</td>
               <td className="px-3 py-2 text-end font-mono tabular-nums text-info-foreground">
-                {formatBytes(entry.logicalReadBytes)}
+                <bdi>{formatBytes(entry.logicalReadBytes)}</bdi>
               </td>
               <td className="px-3 py-2 text-end font-mono tabular-nums text-warning-foreground">
-                {formatBytes(entry.logicalWriteBytes)}
+                <bdi>{formatBytes(entry.logicalWriteBytes)}</bdi>
               </td>
               <td className="px-3 py-2 text-end font-mono tabular-nums">{entry.count}</td>
               <td className="px-3 py-2 text-end font-mono tabular-nums text-muted-foreground sm:pe-5">

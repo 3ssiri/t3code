@@ -65,7 +65,7 @@ function SyntaxTokens({
 }
 
 const monoClassName =
-  "font-mono text-(length:--font-size-code,var(--text-2xs)) leading-relaxed whitespace-pre-wrap break-words select-text";
+  "font-mono [unicode-bidi:plaintext] text-(length:--font-size-code,var(--text-2xs)) leading-relaxed whitespace-pre-wrap break-words select-text";
 
 function StructuredValue({
   value,
