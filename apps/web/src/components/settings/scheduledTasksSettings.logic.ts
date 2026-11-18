@@ -46,6 +46,7 @@ export function weekdayShortLabel(day: number, locale: string = getActiveLocale(
 const ONCE_FORMATTER = new Intl.DateTimeFormat(undefined, {
   dateStyle: "medium",
   timeStyle: "short",
+  numberingSystem: "latn",
 });
 
 export function scheduleLabel(

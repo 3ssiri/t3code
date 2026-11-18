@@ -1098,7 +1098,7 @@ function ConnectionsSettingsContent({
           <SettingsRow
             title={gt("WSL only")}
             description={gt("Run only the WSL backend. T3 Code restarts when this changes.")}
-            className="bg-muted/20 pl-7 sm:pl-8"
+            className="bg-muted/20 ps-7 sm:ps-8"
             control={
               <Switch
                 checked={desktopWslState.wslOnly}

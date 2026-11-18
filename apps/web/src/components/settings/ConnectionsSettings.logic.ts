@@ -175,6 +175,7 @@ export async function applyWslEnableSelection(input: {
 const accessTimestampFormatter = new Intl.DateTimeFormat(undefined, {
   dateStyle: "medium",
   timeStyle: "short",
+  numberingSystem: "latn",
 });
 
 export function formatAccessTimestamp(value: string): string {

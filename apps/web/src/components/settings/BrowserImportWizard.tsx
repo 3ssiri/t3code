@@ -5,7 +5,7 @@ import type { BROWSER_IMPORT_FAILURE_COPY, BrowserImportSource } from "@t3tools/
 import { ArrowDownIcon, ArrowRightIcon, CheckIcon, HardDriveIcon } from "lucide-react";
 import { useRef, useState } from "react";
 import { msg, T, useGT, useMessages, Var } from "gt-react";
-import type { MessageResolver } from "~/i18n/messages";
+import { type MessageResolver } from "~/i18n/messages";
 
 import { cn, randomUUID } from "~/lib/utils";
 
@@ -222,13 +222,17 @@ function QuitStep({
   );
 }
 
+function formatCount(count: number): string {
+  return count.toLocaleString(undefined, { numberingSystem: "latn" });
+}
+
 function cookieCountLabel(count: number | undefined, resolve: MessageResolver): string | undefined {
   if (count === undefined) return undefined;
   if (count === 0) return resolve(msg("no cookies"));
   return resolve(
     msg("{count, plural, one {{formatted} cookie} other {{formatted} cookies}}", {
       count,
-      formatted: count.toLocaleString(),
+      formatted: formatCount(count),
     }),
   );
 }
@@ -467,7 +471,7 @@ function SelectableTile({
       aria-pressed={selected}
       onClick={onSelect}
       className={cn(
-        "flex w-full cursor-pointer items-center justify-between gap-3 rounded-lg border px-3 py-2 text-left outline-none transition-colors focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background",
+        "flex w-full cursor-pointer items-center justify-between gap-3 rounded-lg border px-3 py-2 text-start outline-none transition-colors focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background",
         selected
           ? "border-primary bg-primary/8"
           : "border-border/60 hover:border-border hover:bg-muted/40",
@@ -575,12 +579,12 @@ function DoneStep({
           {imported > 0
             ? gt(
                 "{count, plural, one {Imported {formatted} cookie} other {Imported {formatted} cookies}}",
-                { count: imported, formatted: imported.toLocaleString() },
+                { count: imported, formatted: formatCount(imported) },
               )
             : skipped > 0
               ? gt(
                   "{count, plural, one {Skipped {formatted} cookie} other {Skipped {formatted} cookies}}",
-                  { count: skipped, formatted: skipped.toLocaleString() },
+                  { count: skipped, formatted: formatCount(skipped) },
                 )
               : gt("No cookies found")}
         </DialogTitle>
@@ -591,7 +595,7 @@ function DoneStep({
                   "{count, plural, one {Added to {target} for {environment}. {formatted} cookie skipped.} other {Added to {target} for {environment}. {formatted} cookies skipped.}}",
                   {
                     count: skipped,
-                    formatted: skipped.toLocaleString(),
+                    formatted: formatCount(skipped),
                     target: targetName,
                     environment,
                   },

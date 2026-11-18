@@ -147,7 +147,7 @@ function SourceControlItemMark({
       {icon}
       <span
         className={cn(
-          "pointer-events-none absolute -left-0.5 -top-0.5 size-2 rounded-full ring-2 ring-background",
+          "pointer-events-none absolute -start-0.5 -top-0.5 size-2 rounded-full ring-2 ring-background",
           dotClassName,
         )}
         aria-hidden
@@ -396,7 +396,7 @@ function SourceControlSectionSkeleton({
                   <Skeleton className="size-4.5" />
                   <Skeleton
                     shape="pill"
-                    className="pointer-events-none absolute -left-0.5 -top-0.5 size-2"
+                    className="pointer-events-none absolute -start-0.5 -top-0.5 size-2"
                     aria-hidden
                   />
                 </span>

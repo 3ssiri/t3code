@@ -35,7 +35,11 @@ const failureMessage = (cause: Cause.Cause<unknown>) => {
 };
 
 const expiryTime = (expiresAt: number) =>
-  new Date(expiresAt).toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
+  new Date(expiresAt).toLocaleTimeString(undefined, {
+    hour: "numeric",
+    minute: "2-digit",
+    numberingSystem: "latn",
+  });
 
 function ExternalLink(props: { readonly href: string; readonly children: ReactNode }) {
   return (
@@ -51,7 +55,7 @@ function AppMark(props: { readonly signedIn: boolean }) {
     <div className="relative size-10 shrink-0">
       <T3AppIcon className="size-full" />
       {props.signedIn ? (
-        <span className="absolute -right-1 -bottom-1 grid size-4 place-items-center rounded-full bg-success text-white ring-2 ring-card">
+        <span className="absolute -end-1 -bottom-1 grid size-4 place-items-center rounded-full bg-success text-white ring-2 ring-card">
           <CheckIcon aria-hidden className="size-2.5" strokeWidth={3} />
         </span>
       ) : null}

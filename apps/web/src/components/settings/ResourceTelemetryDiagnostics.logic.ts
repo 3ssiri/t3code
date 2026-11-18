@@ -95,7 +95,10 @@ export function formatSamplingStatus(intervalMs: number, resolve: MessageResolve
       "{count, plural, one {Sampling every {seconds} second} other {Sampling every {seconds} seconds}}",
       {
         count: seconds,
-        seconds: seconds.toLocaleString(undefined, { maximumFractionDigits: 1 }),
+        seconds: seconds.toLocaleString(undefined, {
+          maximumFractionDigits: 1,
+          numberingSystem: "latn",
+        }),
       },
     ),
   );
