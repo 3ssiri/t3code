@@ -36,6 +36,8 @@
         "e2e.config.ts",
         "prove-scenario.ts",
         "scenarios/*.ts",
+        // Arabic translation tooling runs from the command line (see docs/arabic).
+        "arabic/*.mjs",
         "setup-worktree.ts",
         "sign-macos.ts",
         "prepare-server-compile-cache.cjs",
