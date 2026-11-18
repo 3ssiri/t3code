@@ -1,3 +1,4 @@
+import { useDirection } from "@base-ui/react/direction-provider";
 import { useGT } from "gt-react";
 import { type CSSProperties, type ReactNode, useState } from "react";
 
@@ -32,6 +33,7 @@ export function FileExplorerPane({
   resizeLabel?: string;
 }) {
   const gt = useGT();
+  const growKey = useDirection() === "rtl" ? "ArrowRight" : "ArrowLeft";
   const [maxWidth, setMaxWidth] = useState(MAX_WIDTH);
   const [responsiveDefaultWidth, setResponsiveDefaultWidth] = useState(defaultWidth);
   const { width, setWidth, handlers } = useResizableWidth({
@@ -66,7 +68,7 @@ export function FileExplorerPane({
       aria-label={gt("File explorer")}
       className={cn(
         "relative flex min-h-0 min-w-0 shrink-0 bg-background",
-        resizable ? "border-l border-border/60" : "flex-1",
+        resizable ? "border-s border-border/60" : "flex-1",
       )}
       style={
         resizable
@@ -89,12 +91,6 @@ export function FileExplorerPane({
             if (event.altKey || event.ctrlKey || event.metaKey) return;
             let nextWidth: number;
             switch (event.key) {
-              case "ArrowLeft":
-                nextWidth = width + 16;
-                break;
-              case "ArrowRight":
-                nextWidth = width - 16;
-                break;
               case "Home":
                 nextWidth = minWidth;
                 break;
@@ -102,7 +98,8 @@ export function FileExplorerPane({
                 nextWidth = maxWidth;
                 break;
               default:
-                return;
+                if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+                nextWidth = event.key === growKey ? width + 16 : width - 16;
             }
             event.preventDefault();
             event.stopPropagation();

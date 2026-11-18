@@ -812,7 +812,7 @@ export function ServerBrowserSurface(props: {
           disabled={pdfUrl !== null || control?.controller !== "you"}
           defaultValue={INPUT_SENTINEL}
           onFocus={(event) => resetInput(event.currentTarget)}
-          className="sr-only top-0 left-0 text-base"
+          className="sr-only top-0 start-0 text-base"
           onKeyDown={(event) => handleKey("down", event)}
           onKeyUp={(event) => handleKey("up", event)}
           onInput={handleInput}

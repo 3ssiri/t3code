@@ -109,7 +109,14 @@ export function installSidebarTree(root: HTMLElement) {
     const index = rows.indexOf(row);
     if (index < 0) return;
     let target: HTMLElement | undefined;
-    switch (event.key) {
+    const rtl = document.dir === "rtl";
+    const key =
+      rtl && event.key === "ArrowLeft"
+        ? "ArrowRight"
+        : rtl && event.key === "ArrowRight"
+          ? "ArrowLeft"
+          : event.key;
+    switch (key) {
       case "ArrowDown":
         target = rows[Math.min(index + 1, rows.length - 1)];
         break;

@@ -7,6 +7,7 @@ export interface ResizeBounds {
 
 interface ResizeSession {
   width: number;
+  /** The handle's side of the panel, mirrored in RTL: "left" is the inline start. */
   edge: "left" | "right";
   /** Pointer widths are clamped to these before `resize` sees them. */
   bounds: ResizeBounds;
@@ -37,7 +38,9 @@ function createResizeDrag<T extends HTMLElement>() {
   const flush = () => {
     const active = drag;
     if (!active) return;
-    const delta = (active.pendingX - active.startX) * (active.session.edge === "left" ? -1 : 1);
+    const mirror = document.dir === "rtl" ? -1 : 1;
+    const delta =
+      (active.pendingX - active.startX) * (active.session.edge === "left" ? -1 : 1) * mirror;
     if (Math.abs(delta) > 2) active.moved = true;
     active.width = active.session.resize(
       clampToBounds(active.session.width + delta, active.session.bounds),

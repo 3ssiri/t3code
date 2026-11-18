@@ -303,7 +303,14 @@ export function showContextMenuFallback<T extends string>(
       );
       const index = buttons.indexOf(document.activeElement as HTMLButtonElement);
       let target: HTMLButtonElement | undefined;
-      switch (event.key) {
+      const rtl = document.dir === "rtl";
+      const key =
+        rtl && event.key === "ArrowLeft"
+          ? "ArrowRight"
+          : rtl && event.key === "ArrowRight"
+            ? "ArrowLeft"
+            : event.key;
+      switch (key) {
         case "ArrowDown":
           target = buttons[(index + 1) % buttons.length];
           break;
@@ -438,7 +445,7 @@ export function showContextMenuFallback<T extends string>(
         button.setAttribute("role", "menuitem");
         button.setAttribute("aria-disabled", String(isDisabled));
         const rowBase =
-          "flex w-full cursor-default select-none items-center gap-2 rounded-sm px-2 py-1 text-left outline-none transition-colors sm:min-h-7 sm:text-sm min-h-8 text-base";
+          "flex w-full cursor-default select-none items-center gap-2 rounded-sm px-2 py-1 text-start outline-none transition-colors sm:min-h-7 sm:text-sm min-h-8 text-base";
         button.className = isDisabled
           ? `${rowBase} pointer-events-none cursor-not-allowed text-muted-foreground opacity-64`
           : isLeafDestructive
@@ -608,8 +615,11 @@ export function showContextMenuFallback<T extends string>(
         const { width } = menu.getBoundingClientRect();
         const roomLeft = parentTrigger.getBoundingClientRect().left - 4;
         const roomRight = window.innerWidth - preferredLeft;
-        const flipLeft = width > roomRight && roomLeft > roomRight;
-        clampMenuPosition(menu, flipLeft ? roomLeft - width : preferredLeft, preferredTop);
+        const openOnLeft =
+          document.dir === "rtl"
+            ? !(width > roomLeft && roomRight > roomLeft)
+            : width > roomRight && roomLeft > roomRight;
+        clampMenuPosition(menu, openOnLeft ? roomLeft - width : preferredLeft, preferredTop);
       });
     };
 

@@ -429,7 +429,7 @@ export function PullRequestReviewOutcomeAvatarBadge({
       aria-hidden
       strokeWidth={3}
       className={cn(
-        "absolute -right-1 -bottom-1 size-3 text-background",
+        "absolute -end-1 -bottom-1 size-3 text-background",
         presentation.fillClassName,
         stale && "opacity-50",
       )}
@@ -565,8 +565,12 @@ export function PullRequestDiffStat({
   }
   return (
     <span className={cn("inline-flex items-baseline gap-1 tabular-nums", className)}>
-      <span className="text-diff-addition-foreground">+{formatDiffCount(additions)}</span>
-      <span className="text-diff-deletion">-{formatDiffCount(deletions)}</span>
+      <span className="text-diff-addition-foreground">
+        <bdi>+{formatDiffCount(additions)}</bdi>
+      </span>
+      <span className="text-diff-deletion">
+        <bdi>-{formatDiffCount(deletions)}</bdi>
+      </span>
     </span>
   );
 }

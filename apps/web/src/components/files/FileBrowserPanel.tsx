@@ -594,7 +594,7 @@ export default function FileBrowserPanel({
         <button
           type="button"
           onClick={handleRefresh}
-          className="p-4 text-left text-xs leading-relaxed text-destructive"
+          className="p-4 text-start text-xs leading-relaxed text-destructive"
         >
           {gt("{error} Click to retry.", { error: error ?? pathSearch.error })}
         </button>
