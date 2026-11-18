@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vite-plus/test";
 
-import { localeDirection } from "./locales";
+import { localeDirection } from "./locales.ts";
 
 describe("localeDirection", () => {
   it.each([
