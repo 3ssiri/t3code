@@ -157,7 +157,7 @@ function HistoryNavigationButton({
           />
         }
       >
-        <Icon className="size-3.5" />
+        <Icon className="size-3.5 rtl:rotate-180" />
       </TooltipTrigger>
       <TooltipPopup side="bottom">
         {label}
