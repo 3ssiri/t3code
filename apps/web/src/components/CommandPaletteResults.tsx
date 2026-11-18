@@ -307,7 +307,7 @@ function CommandPaletteResultRow(props: {
         />
       ) : null}
       {props.item.timestamp ? (
-        <span className="min-w-12 shrink-0 text-right text-xs tabular-nums text-muted-foreground/70">
+        <span className="min-w-12 shrink-0 text-end text-xs tabular-nums text-muted-foreground/70">
           {props.item.timestamp}
         </span>
       ) : null}

@@ -1128,7 +1128,7 @@ function OpenCommandPaletteDialog(props: {
       const disabledHint = readiness.hint;
 
       const titleTrailingContent = readiness.ready ? undefined : (
-        <span className="ml-auto">
+        <span className="ms-auto">
           <Tooltip>
             <TooltipTrigger
               render={
@@ -1143,7 +1143,7 @@ function OpenCommandPaletteDialog(props: {
                 </Button>
               }
             />
-            <TooltipPopup align="end" side="left">
+            <TooltipPopup align="end" side="inline-start">
               {disabledHint ??
                 gt("Open Settings -> Source control & issues to configure this provider.")}
             </TooltipPopup>

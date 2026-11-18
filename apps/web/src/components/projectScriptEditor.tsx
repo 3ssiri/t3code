@@ -588,7 +588,7 @@ function ProjectScriptEditorForm({
           <Button
             type="button"
             variant="destructive-outline"
-            className="mr-auto"
+            className="me-auto"
             disabled={isSaving || !canEditActions}
             onClick={() => onRequestDelete(name)}
           >

@@ -923,7 +923,7 @@ export default function DiffPanel({
                               Turn <Var>{turnCount}</Var>
                             </T>
                           </span>
-                          <span className="ml-auto text-xs tabular-nums text-muted-foreground">
+                          <span className="ms-auto text-xs tabular-nums text-muted-foreground">
                             {formatShortTimestamp(summary.completedAt, settings.timestampFormat)}
                           </span>
                         </span>
@@ -979,7 +979,7 @@ export default function DiffPanel({
                               </span>
                             </span>
                           </TooltipTrigger>
-                          <TooltipPopup side="right" className="max-w-80">
+                          <TooltipPopup side="inline-end" className="max-w-80">
                             {commit.subject}
                           </TooltipPopup>
                         </Tooltip>
@@ -1111,7 +1111,7 @@ export default function DiffPanel({
                     <span>
                       <T context="git branch">Branch</T>
                     </span>
-                    <span className="text-right">
+                    <span className="text-end">
                       <T context="git remote">Remote</T>
                     </span>
                   </div>
@@ -1198,7 +1198,7 @@ export default function DiffPanel({
           <DiffStatLabel
             additions={diffLineStat.additions}
             deletions={diffLineStat.deletions}
-            className="mr-1 text-2xs"
+            className="me-1 text-2xs"
             layout="inline"
           />
         ) : null}
