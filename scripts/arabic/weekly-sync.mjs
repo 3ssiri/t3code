@@ -2,12 +2,13 @@ import * as NodeFS from "node:fs";
 import * as NodePath from "node:path";
 import * as NodeURL from "node:url";
 import * as NodeChildProcess from "node:child_process";
-import { validateCatalog } from "./validate-catalog.mjs";
+import { parseGlossary, validateCatalog } from "./validate-catalog.mjs";
 
 const here = NodePath.dirname(NodeURL.fileURLToPath(import.meta.url));
 const root = NodePath.resolve(here, "..", "..");
 const STATE_FILE = NodePath.join(here, "sync-state.json");
 const PROGRESS_FILE = NodePath.join(root, "docs", "arabic", "PROGRESS.md");
+const GLOSSARY_FILE = NodePath.join(root, "docs", "arabic", "glossary.md");
 const PR = "37893";
 const BRANCH_TARGET = "upstream/t3/i18n-translate-all-languages";
 const MAIN_TARGET = "upstream/main";
@@ -139,6 +140,9 @@ ${conflicts}`,
 
   const keepPath = NodePath.join(here, "keep-english.json");
   const keepEnglish = new Set(NodeFS.existsSync(keepPath) ? readJson(keepPath) : []);
+  const forbidden = NodeFS.existsSync(GLOSSARY_FILE)
+    ? parseGlossary(NodeFS.readFileSync(GLOSSARY_FILE, "utf8"))
+    : [];
   const newKeys = [];
   const issues = [];
   for (const app of APPS) {
@@ -149,7 +153,8 @@ ${conflicts}`,
       `${JSON.stringify(ar, null, 2)}
 `,
     );
-    for (const line of validateCatalog(en, ar, { keepEnglish })) issues.push({ app, line });
+    for (const line of validateCatalog(en, ar, { keepEnglish, forbidden }))
+      issues.push({ app, line });
     for (const key of untranslatedKeys(en, ar, keepEnglish))
       newKeys.push({ app, key, en: en[key] });
   }
