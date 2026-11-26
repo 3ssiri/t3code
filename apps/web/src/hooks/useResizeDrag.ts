@@ -9,9 +9,10 @@ interface ResizeSession {
   width: number;
   /** The handle's side of the panel, mirrored in RTL: "left" is the inline start. */
   edge: "left" | "right";
-  /** Pointer widths are clamped to these before `resize` sees them. */
+  /** The first `resize` argument is clamped; the second retains pointer intent. */
   bounds: ResizeBounds;
-  resize: (width: number) => number;
+  resize: (width: number, rawWidth: number) => number;
+  cancelOnInterrupt?: boolean;
   finish: (width: number, moved: boolean) => void;
   cleanup?: (committed: boolean) => void;
 }
@@ -42,9 +43,8 @@ function createResizeDrag<T extends HTMLElement>() {
     const delta =
       (active.pendingX - active.startX) * (active.session.edge === "left" ? -1 : 1) * mirror;
     if (Math.abs(delta) > 2) active.moved = true;
-    active.width = active.session.resize(
-      clampToBounds(active.session.width + delta, active.session.bounds),
-    );
+    const rawWidth = active.session.width + delta;
+    active.width = active.session.resize(clampToBounds(rawWidth, active.session.bounds), rawWidth);
   };
 
   const finish = (commit: boolean) => {
@@ -71,7 +71,7 @@ function createResizeDrag<T extends HTMLElement>() {
     if (!active || active.pointerId !== event.pointerId) return;
     event.preventDefault();
     if (usePosition) active.pendingX = event.clientX;
-    finish(true);
+    finish(usePosition || !active.session.cancelOnInterrupt);
   };
 
   return {
@@ -94,8 +94,7 @@ function createResizeDrag<T extends HTMLElement>() {
       }
       event.preventDefault();
       event.stopPropagation();
-      // Leaving the window mid-drag commits where the pointer was.
-      const onBlur = () => finish(true);
+      const onBlur = () => finish(!session.cancelOnInterrupt);
       window.addEventListener("blur", onBlur);
       drag = {
         session,

@@ -7,23 +7,11 @@ import * as NodeFS from "node:fs";
 import * as NodeOS from "node:os";
 import * as NodePath from "node:path";
 
-// Windows installs the gt bin as a `.cmd` shim, which spawnSync can only run through cmd.exe.
-const GT: readonly [string, ...string[]] =
-  // oxlint-disable-next-line t3code/no-global-process-runtime -- A one-shot Node script with no Effect runtime.
-  process.platform === "win32"
-    ? [
-        process.env.ComSpec ?? "cmd.exe",
-        "/d",
-        "/c",
-        NodePath.join("node_modules", ".bin", "gt.cmd"),
-        "generate",
-      ]
-    : ["node_modules/.bin/gt", "generate"];
-
 // Desktop only depends on gt-i18n, so the gt CLI hides `generate` there; its script adds it back.
+// The gt CLI runs through Node because the `.bin/gt` shim is a shell script Windows cannot spawn.
 const GENERATE: Record<string, readonly [string, ...string[]]> = {
-  "apps/web": GT,
-  "apps/mobile": GT,
+  "apps/web": [process.execPath, "node_modules/gt/bin/main.js", "generate"],
+  "apps/mobile": [process.execPath, "node_modules/gt/bin/main.js", "generate"],
   "apps/desktop": [process.execPath, "scripts/i18n-generate.mjs"],
 };
 const APPS = Object.keys(GENERATE);
